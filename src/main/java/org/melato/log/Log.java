@@ -14,9 +14,9 @@ public class Log {
   public static void setLogger(Logger logger) {
     Log.logger = logger;
   }
-  public static void info( String message ) {
+  public static void info( Object message ) {
     if ( logger != null ) {
-      logger.log(message);
+      logger.log(String.valueOf(message));
     }
     
   }
