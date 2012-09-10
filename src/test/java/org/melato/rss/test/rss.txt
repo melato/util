@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss>
+<channel>
+<item>
+<title>title1</title>
+<link>link1</link>
+<pubDate>Mon, 11 Sep 2012 11:30:33 GMT</pubDate>
+<guid isPermaLink="false">guild1</guid>
+<description>desc1</description>
+</item>
+<item>
+<title>title2</title>
+<link>link2</link>
+<pubDate>Mon, 12 Sep 2012 11:30:33 GMT</pubDate>
+<guid isPermaLink="true">guild2</guid>
+<description>desc2</description>
+</item>
+</channel>
+</rss>
