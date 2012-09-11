@@ -12,7 +12,7 @@ import org.xml.sax.SAXException;
 
 public class RSSTest {
   public @Test void testParse() throws IOException, SAXException {
-    List<Item> items = RSS.parse(getClass().getResourceAsStream("rss.txt"));
+    List<Item> items = RSS.parse(getClass().getResourceAsStream("rss.xml"));
     Assert.assertEquals(2, items.size());
     Item item = items.get(0);
     Assert.assertEquals( "title1", item.getTitle());
