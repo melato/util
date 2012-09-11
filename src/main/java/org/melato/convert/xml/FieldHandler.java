@@ -11,14 +11,14 @@ import java.util.Collection;
  *
  * @param <T>
  */
-public class BeanHandler<T> extends ReflectionHandler<T> {
+public class FieldHandler<T> extends ReflectionHandler<T> {
 
   /**
    * @param beanClass  The class to use in order to construct beans.
    * @param collector  Where to put the resulting beans.
    */
-  public BeanHandler(Class<T> beanClass, Collection<T> collector) {
-    super(beanClass, new BeanPropertyReflector(), collector);
+  public FieldHandler(Class<T> beanClass, Collection<T> collector) {
+    super(beanClass, new FieldPropertyReflector(), collector);
   }
 
 }

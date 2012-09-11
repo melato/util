@@ -1,9 +1,10 @@
 package org.melato.convert.test;
 
 
+
 public class TestBean {
-  private String  name;
-  private int     count;
+  public String  name;
+  public int     count;
   public String getName() {
     return name;
   }

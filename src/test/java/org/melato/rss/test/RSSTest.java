@@ -1,6 +1,7 @@
 package org.melato.rss.test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -20,7 +21,9 @@ public class RSSTest {
     Assert.assertEquals( "title2", item.getTitle());    
   }
   public @Test void beanParserTest() throws IOException, SAXException {
-    List<Item> items = BeanHandler.parse(Item.class, RSS.RSS_CHANNEL_ITEM, getClass().getResourceAsStream("rss.txt"));    
+    List<Item> items = new ArrayList<Item>();
+    BeanHandler<Item> handler = new BeanHandler<Item>(Item.class, items);
+    handler.parse(RSS.RSS_CHANNEL_ITEM, getClass().getResourceAsStream("rss.txt"));    
     Assert.assertEquals(2, items.size());
   }
 
