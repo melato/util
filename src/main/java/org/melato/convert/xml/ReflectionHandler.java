@@ -1,15 +1,11 @@
 package org.melato.convert.xml;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 
 import org.melato.convert.ParserManager;
 import org.melato.convert.TypeParser;
-import org.melato.log.Log;
 import org.melato.xml.XMLDelegator;
 import org.melato.xml.XMLMappingHandler;
 import org.melato.xml.XMLStringHandler;
@@ -40,7 +36,6 @@ public class ReflectionHandler<T> extends XMLMappingHandler {
   public ReflectionHandler(Class<T> beanClass, PropertyReflector reflector, Collection<T> collector) {
     this.beanClass = beanClass;
     this.collector = collector;
-    Log.info(beanClass.getName());
     this.reflector = reflector;
     reflector.setBeanClass(beanClass);
     handlers = new XMLStringHandler[reflector.getPropertyCount()];
