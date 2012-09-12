@@ -23,7 +23,7 @@ public class RSSTest {
   public @Test void beanParserTest() throws IOException, SAXException {
     List<Item> items = new ArrayList<Item>();
     BeanHandler<Item> handler = new BeanHandler<Item>(Item.class, items);
-    handler.parse(RSS.RSS_CHANNEL_ITEM, getClass().getResourceAsStream("rss.txt"));    
+    handler.parse(RSS.RSS_CHANNEL_ITEM, getClass().getResourceAsStream("rss.xml"));    
     Assert.assertEquals(2, items.size());
   }
 
