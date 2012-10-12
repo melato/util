@@ -2,28 +2,34 @@ package org.melato.util;
 
 import java.util.AbstractList;
 
-/** A fixed-size collection where old elements are discarded. */
+/** A fixed-size collection where old items are discarded. */
 public class CircularList<T> extends AbstractList<T> {
   private Object[] data;
-  /** The index of the first element in the list. */
+  /** The index of the first item in the list. */
   private int start = 0;
-  /** The index past the last element in the list.
+  /** The index past the last item in the list.
    * When the list is full, start == end
    * */
   private int end = 0;
   private int size;
+  private boolean autoresize; 
   
   public CircularList( int length) {
     data = new Object[length];
   }
   
-  /** Return the number of points in the buffer.  Between 0 and size. */
+  public CircularList() {
+    this(10);
+    autoresize = true;
+  }
+  
+  /** Return the number of items in the list.  Between 0 and size. */
   public int size() {
     return size;
   }
     
   /**
-   * Get an element from the list.
+   * Get an item from the list.
    */
   @SuppressWarnings("unchecked")
   public T get(int i) {
@@ -36,22 +42,48 @@ public class CircularList<T> extends AbstractList<T> {
   
   @Override
   public boolean add(T e) {
-    data[end] = e;
-    end = (end + 1) % data.length;
-    if ( size == data.length ) {
-      start = end;
+    if ( ! autoresize ) {
+      data[end] = e;
+      end = (end + 1) % data.length;
+      if ( size == data.length ) {
+        start = end;
+      } else {
+        size++;
+      }      
     } else {
-      size++;
+      add(size(), e);
     }
     return true;
   }
+  
+  @Override
+  public void clear() {
+    start = 0;
+    end = 0;
+    size = 0;
+  }
 
+  private void resize() {
+    int start = this.start;
+    int size = this.size;
+    Object[] data = this.data;
+    this.data = new Object[this.data.length*2];
+    for( int i = 0; i < size; i++ ) {
+      this.data[i] = data[(start+i)%data.length];
+    }
+    start = 0;
+    end = size;
+  }
+  
   @Override
   public void add(int index, T e) {
     int length = data.length;
+    if ( length == size && autoresize ) {
+      resize();
+    }
     if ( index > size / 2 + 1 ) {
       // shift the right part to the right
-      for( int j = size; j >= index; j-- ) {
+      for( int j = size - 1; j >= index; j-- ) {
         // index is > 0, so j - 1 is >= 0
         data[(start + j) % length] = data[(start + j - 1) % length];
       }
@@ -78,8 +110,6 @@ public class CircularList<T> extends AbstractList<T> {
 
   @Override
   public T remove(int index) {
-    if ( size == 0 )
-      throw new IllegalArgumentException("cannot remove from an empty list" );
     T t = get(index);    
     int length = data.length;
     if ( index > size / 2 ) {
