@@ -19,21 +19,17 @@
 package org.melato.reflect;
 
 
-public class FieldWriterFactory implements PropertyWriterFactory {
-  Class<?> cls;
-  
-  public FieldWriterFactory(Class<?> cls) {
-    this.cls = cls;
+
+public class NullPropertyWriter implements PropertyWriter {
+  public NullPropertyWriter() {
   }
 
   @Override
-  public PropertyWriter getWriter(String name) {
-    try {
-      return new FieldWriter(cls, name);
-    } catch (NoSuchFieldException e) {
-      System.err.println( "Ignoring unknown field: " + cls.getName() + "." + name);
-      return new NullPropertyWriter();
-    }
+  public Class<?> getPropertyType() {
+    return String.class;
   }
-  
+
+  @Override
+  public void apply(Object obj, Object value) {
+  }    
 }
