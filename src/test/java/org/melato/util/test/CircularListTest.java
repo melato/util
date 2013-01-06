@@ -95,5 +95,25 @@ public class CircularListTest {
       Assert.assertEquals(i, (int) list.get(i));
     }
   }
+  public @Test void testAutoResize() {
+    CircularList<Integer> list = new CircularList<Integer>();
+    int n = 20;
+    for( int i = 0; i < n; i++ ) {
+      list.add(i);
+    }
+    Assert.assertEquals(n, list.size());
+  }
+  public @Test void testAutoResize2() {
+    CircularList<Integer> list = new CircularList<Integer>();
+    int n = 11;
+    for( int i = 0; i < n; i++ ) {
+      list.add(i);
+    }
+    Assert.assertEquals(n, list.size());
+    for( int i = 0; i < n; i++ ) {
+      Assert.assertEquals(i,  (int) list.get(i));
+    }    
+  }
+  
   
 }
