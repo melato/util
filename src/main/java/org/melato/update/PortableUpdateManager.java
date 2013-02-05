@@ -176,9 +176,15 @@ public class PortableUpdateManager {
   public boolean isRequired() {
     return isFirstTime();
   }
+    
   public boolean isFirstTime() {
     File file = new File(filesDir, AVAILABLE);
     return ! file.exists();    
+  }
+  
+  public void forceUpdates() {
+    File file = new File(filesDir, INSTALLED);
+    file.delete();
   }
   /**
    * Check if the list of available updates needs to be refreshed from the server.
