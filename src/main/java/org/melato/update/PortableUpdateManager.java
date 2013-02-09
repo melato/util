@@ -183,7 +183,7 @@ public class PortableUpdateManager {
   }
   
   public void forceUpdates() {
-    File file = new File(filesDir, INSTALLED);
+    File file = new File(filesDir, AVAILABLE);
     file.delete();
   }
   /**
