@@ -159,18 +159,25 @@ public class PortableUpdateManager {
    * @return
    */
   private boolean needsRefresh(Collection<UpdateFile> list, long lastUpdateTime) {
+    Log.info( "needsRefresh: " + lastUpdateTime );
     long now = System.currentTimeMillis();
     boolean hasFiles = false;
+    boolean needsRefresh = false;
     for(UpdateFile f: list) {
       hasFiles = true;
       long expires = lastUpdateTime + f.getFrequencyHours() * 3600 * 1000L;
-      if ( expires < now )
-        return true;
+      //expires = lastUpdateTime + 10;  // *****  DEBUG *****
+      Log.info( "refresh now: " + now + " last: " + lastUpdateTime + " expires: " + expires + " hours: " + f.getFrequencyHours() );
+      if ( expires < now ) {
+        needsRefresh = true;
+        break;
+      }
     }
     if ( ! hasFiles ) {
-      return lastUpdateTime + DEFAULT_FREQUENCY_HOURS * 3600 * 1000L < now;
+      needsRefresh = lastUpdateTime + DEFAULT_FREQUENCY_HOURS * 3600 * 1000L < now;
     }
-    return false;
+    Log.info( "needsRefresh: " + needsRefresh );
+    return needsRefresh;
   }
 
   public boolean isRequired() {
@@ -279,6 +286,7 @@ public class PortableUpdateManager {
         updates.add(available);
       }
     }
+    Log.info( "available updates: " + updates.size());
     return updates;
   }
   
