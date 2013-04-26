@@ -26,7 +26,11 @@ import java.util.List;
 public abstract class AbstractListGrouper<T> {
   /** Determines whether two consecutive items are in the same group. */
   protected abstract boolean inSameGroup(T item, T nextItem);
-  protected abstract void addGroup(List<T> group);
+  protected void addGroup(List<T> group) {    
+  }
+  protected void addGroup(List<T> items, int start, int end) {
+    addGroup(items.subList(start,  end));
+  }
 
   public void group(List<T> items) {
     if ( items.isEmpty())
@@ -35,12 +39,12 @@ public abstract class AbstractListGrouper<T> {
     int size = items.size();
     for( int i = 1; i < size; i++ ) {
       if ( ! inSameGroup(items.get(i-1), items.get(i))) {
-        addGroup(items.subList(start,  i));
+        addGroup(items, start,  i);
         start = i;
       }
     }
     if ( start != size )
-      addGroup(items.subList(start, size));
+      addGroup(items, start, size);
   }
   
   public void group(T[] items) {
