@@ -166,7 +166,7 @@ public class PortableUpdateManager {
     for(UpdateFile f: list) {
       hasFiles = true;
       long expires = lastUpdateTime + f.getFrequencyHours() * 3600 * 1000L;
-      expires = lastUpdateTime + 10;  // *****  DEBUG *****
+      //expires = lastUpdateTime + 10;  // *****  DEBUG *****
       Log.info( "refresh now: " + now + " last: " + lastUpdateTime + " expires: " + expires + " hours: " + f.getFrequencyHours() );
       if ( expires < now ) {
         needsRefresh = true;
