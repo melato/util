@@ -95,7 +95,7 @@ public class PortableUpdateManager {
       try {
         ReflectionHandler<UpdateFile> reader = new FieldHandler<UpdateFile>(UpdateFile.class, collector);    
         reader.parse(UPDATES_TAG + "/" + FILE_TAG, new FileInputStream(file));
-        Log.info( "readIndex size=" + collector.size());
+        //Log.info( "readIndex size=" + collector.size());
         return true;
       } catch(Exception e) {
         file.delete();
@@ -145,7 +145,7 @@ public class PortableUpdateManager {
   private void downloadAvailable() throws IOException {
     File file = new File(filesDir, AVAILABLE);
     Streams.copy(indexUrl, file);
-    Log.info( indexUrl );
+    //Log.info( indexUrl );
   }
   
   /** If the list of available updates is empty, check once a week. */
@@ -167,7 +167,7 @@ public class PortableUpdateManager {
       hasFiles = true;
       long expires = lastUpdateTime + f.getFrequencyHours() * 3600 * 1000L;
       //expires = lastUpdateTime + 10;  // *****  DEBUG *****
-      Log.info( "refresh now: " + now + " last: " + lastUpdateTime + " expires: " + expires + " hours: " + f.getFrequencyHours() );
+      //Log.info( "refresh now: " + now + " last: " + lastUpdateTime + " expires: " + expires + " hours: " + f.getFrequencyHours() );
       if ( expires < now ) {
         needsRefresh = true;
         break;
@@ -176,7 +176,7 @@ public class PortableUpdateManager {
     if ( ! hasFiles ) {
       needsRefresh = lastUpdateTime + DEFAULT_FREQUENCY_HOURS * 3600 * 1000L < now;
     }
-    Log.info( "needsRefresh: " + needsRefresh );
+    //Log.info( "needsRefresh: " + needsRefresh );
     return needsRefresh;
   }
 
@@ -200,7 +200,7 @@ public class PortableUpdateManager {
   public boolean needsRefresh() {
     availableFiles = new ArrayList<UpdateFile>();
     File file = new File(filesDir, AVAILABLE);
-    Log.info( file );
+    //Log.info( file );
     if ( file.exists() ) {
       readIndex(AVAILABLE, availableFiles);
       return needsRefresh(availableFiles, file.lastModified());
@@ -219,15 +219,15 @@ public class PortableUpdateManager {
    * In all cases, the available updates will be not-null.
    */
   private void initAvailable() {
-    Log.info("initAvailable availableFiles=" + availableFiles );
+    //Log.info("initAvailable availableFiles=" + availableFiles );
     if ( availableFiles == null && needsRefresh() ) {
       availableFiles = new ArrayList<UpdateFile>();
       File file = new File(filesDir, AVAILABLE);
-      Log.info( file );
+      //Log.info( file );
       try {
         downloadAvailable();
       } catch (IOException e) {
-        Log.info(e);
+        //Log.info(e);
       }
       if ( file.exists() ) {
         readIndex(AVAILABLE, availableFiles);
@@ -275,7 +275,7 @@ public class PortableUpdateManager {
     initInstalled();
     List<UpdateFile> updates = new ArrayList<UpdateFile>();
     for(UpdateFile available: availableFiles ) {
-      Log.info( available );
+      //Log.info( available );
       String version = available.getVersion();
       if ( version == null ) {
         System.err.println( "Missing version from available update: " + available.getName());
@@ -286,7 +286,7 @@ public class PortableUpdateManager {
         updates.add(available);
       }
     }
-    Log.info( "available updates: " + updates.size());
+    //Log.info( "available updates: " + updates.size());
     return updates;
   }
   
@@ -320,7 +320,7 @@ public class PortableUpdateManager {
   
   public void updateFile(UpdateFile updateFile, File destinationFile) {
     File tmpFile = getTempFile(destinationFile, ".tmp");
-    Log.info("update file: " + destinationFile);
+    //Log.info("update file: " + destinationFile);
     URL url;
     try {
       url = getURL(updateFile.getUrl());
@@ -340,7 +340,7 @@ public class PortableUpdateManager {
 
   public void updateZipedFile(UpdateFile updateFile, String zipEntry, File destinationFile)
       throws IOException {
-    Log.info("update zip file: " + destinationFile);
+    //Log.info("update zip file: " + destinationFile);
     destinationFile.getParentFile().mkdirs();
     File zipFile = getTempFile(destinationFile, ".zip");
     File tmpFile = getTempFile(destinationFile, ".tmp");
