@@ -338,30 +338,25 @@ public class PortableUpdateManager {
     }    
   }
 
-  public void updateZipedFile(UpdateFile updateFile, String zipEntry, File destinationFile) {
+  public void updateZipedFile(UpdateFile updateFile, String zipEntry, File destinationFile)
+      throws IOException {
     Log.info("update zip file: " + destinationFile);
     destinationFile.getParentFile().mkdirs();
     File zipFile = getTempFile(destinationFile, ".zip");
     File tmpFile = getTempFile(destinationFile, ".tmp");
     URL url;
-    try {
-      url = getURL(updateFile.getUrl());
-      int size = updateFile.getSize();
-      if ( size != 0 ) {
-        ProgressGenerator.get().setLimit(size);
-      }        
-      Streams.copy(url, zipFile);
-      unzip( zipFile, zipEntry, tmpFile);
-      zipFile.delete();
-      tmpFile.renameTo(destinationFile);
-      setInstalled(updateFile);
-    } catch (MalformedURLException e) {
-      throw new RuntimeException( e );
-    } catch (IOException e) {
-      throw new RuntimeException( e );
-    }    
+    url = getURL(updateFile.getUrl());
+    int size = updateFile.getSize();
+    if ( size != 0 ) {
+      ProgressGenerator.get().setLimit(size);
+    }        
+    Streams.copy(url, zipFile);
+    unzip( zipFile, zipEntry, tmpFile);
+    zipFile.delete();
+    tmpFile.renameTo(destinationFile);
+    setInstalled(updateFile);
   }
 
-  public void update(List<UpdateFile> updates) {}
+  public void update(List<UpdateFile> updates) throws IOException {}
  
 }
