@@ -28,7 +28,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -55,22 +57,25 @@ public class PortableUpdateManager {
   
   private File  filesDir;
   private URL   indexUrl;
+  
+  private Set<String> missingFiles = new HashSet<String>();
+  
     
   public PortableUpdateManager(URL indexUrl, File filesDir) {
-    super();
+    this();
     setIndexUrl(indexUrl);
     setFilesDir(filesDir);
   }
 
   public PortableUpdateManager(String indexUrl, File filesDir) {
-    super();
+    this();
     setIndexUrl(indexUrl);
     setFilesDir(filesDir);
   }
 
-  protected PortableUpdateManager() {    
+  protected PortableUpdateManager() {
+    Log.info("PortableUpdateManager()");
   }
-  
   
   protected void setFilesDir(File filesDir) {
     this.filesDir = filesDir;
@@ -151,6 +156,10 @@ public class PortableUpdateManager {
   /** If the list of available updates is empty, check once a week. */
   private int DEFAULT_FREQUENCY_HOURS = 24 * 7;
   
+  public void addMissingFile(String name) {
+    missingFiles.add(name);
+    Log.info("addMissing: " + name);
+  }
   /**
    * Return true if any of the updates in the list needs to be rechecked relative 
    * If 
@@ -181,8 +190,15 @@ public class PortableUpdateManager {
   }
 
   public boolean isRequired() {
-    return isFirstTime();
-  }
+    if ( isFirstTime()) {
+      return true;
+    }
+    if ( ! missingFiles.isEmpty()) {
+      forceUpdates();
+      return true;
+    }
+    return false;
+  }  
     
   public boolean isFirstTime() {
     File file = new File(filesDir, AVAILABLE);
@@ -203,6 +219,9 @@ public class PortableUpdateManager {
     //Log.info( file );
     if ( file.exists() ) {
       readIndex(AVAILABLE, availableFiles);
+      if ( ! missingFiles.isEmpty()) {
+        return true;
+      }
       return needsRefresh(availableFiles, file.lastModified());
     } else {
       availableFiles = null;
@@ -275,18 +294,26 @@ public class PortableUpdateManager {
     initInstalled();
     List<UpdateFile> updates = new ArrayList<UpdateFile>();
     for(UpdateFile available: availableFiles ) {
-      //Log.info( available );
       String version = available.getVersion();
       if ( version == null ) {
         System.err.println( "Missing version from available update: " + available.getName());
         continue;
       }
-      UpdateFile installed = findFile(installedFiles, available.getName());
-      if ( installed == null || ! version.equals(installed.getVersion())) {
+      boolean update = false;
+      if ( missingFiles.contains(available.getName())) {
+        update = true;
+      } else {
+        UpdateFile installed = findFile(installedFiles, available.getName());
+        if ( installed == null || ! version.equals(installed.getVersion())) {
+          update = true;
+        }
+      }
+      Log.info( available + ": " + update );
+      if ( update ) {
         updates.add(available);
       }
     }
-    //Log.info( "available updates: " + updates.size());
+    Log.info( "available updates: " + updates.size());
     return updates;
   }
   
