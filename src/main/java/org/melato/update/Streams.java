@@ -31,7 +31,7 @@ import org.melato.progress.ProgressGenerator;
 
 /** Various utilities, mainly for doing I/O */
 public class Streams {
-  public static void copy(InputStream in, OutputStream out) throws IOException {
+  public static void copy(InputStream in, OutputStream out, boolean closeStreams) throws IOException {
     ProgressGenerator progress = ProgressGenerator.get();
     byte[] buf = new byte[4096];
     int total = 0;
@@ -43,9 +43,14 @@ public class Streams {
         progress.setPosition(total);
       }
     } finally {
-      in.close();
-      out.close();
+      if ( closeStreams ) {
+        in.close();
+        out.close();
+      }
     }
+  }
+  public static void copy(InputStream in, OutputStream out) throws IOException {
+    copy(in, out, true);
   }
 
   public static void copy(URL url, File file) throws IOException {
