@@ -149,7 +149,7 @@ public class PortableUpdateManager {
   
   private void downloadAvailable() throws IOException {
     File file = new File(filesDir, AVAILABLE);
-    Streams.copy(indexUrl, file);
+    Streams.copy(indexUrl, file);    
     //Log.info( indexUrl );
   }
   
@@ -246,7 +246,7 @@ public class PortableUpdateManager {
       try {
         downloadAvailable();
       } catch (IOException e) {
-        //Log.info(e);
+        Log.info(e);
       }
       if ( file.exists() ) {
         readIndex(AVAILABLE, availableFiles);
