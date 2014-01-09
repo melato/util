@@ -20,18 +20,22 @@
  */
 package org.melato.client;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 
 public class Serialization {
-  public static Object read(Class<?> clazz, File file) {
-    System.out.println( "read " + file);
+  public static Object read(Class<?> clazz, InputStream stream) {
     try {
-      ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+      ObjectInputStream in = new ObjectInputStream(stream);
       try {
         Object obj = in.readObject();
         if ( ! clazz.isInstance(obj)) {
@@ -47,8 +51,8 @@ public class Serialization {
     }
   }
   
-  public static void write(Object object, File file) throws IOException {
-    ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+  public static void write(Object object, OutputStream stream) throws IOException {
+    ObjectOutputStream out = new ObjectOutputStream(stream);
     try {
       out.writeObject(object);
     } finally {
@@ -56,4 +60,25 @@ public class Serialization {
     }
   }
 
+  public static Object read(Class<?> clazz, File file) {
+    System.out.println( "read " + file);
+    try {
+      return read(clazz, new FileInputStream(file));
+    } catch (FileNotFoundException e) {
+      System.out.println(e);
+      return null;
+    }
+  }
+  public static void write(Object object, File file) throws IOException {
+    write(object, new FileOutputStream(file));
+  }
+  public static Object read(Class<?> clazz, byte[] data) {
+    return read(clazz, new ByteArrayInputStream(data));
+  }
+  public static byte[] toByteArray(Object object) throws IOException {
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    write(object, stream);
+    return stream.toByteArray();
+  }
+  
 }
