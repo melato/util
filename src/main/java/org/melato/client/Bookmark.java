@@ -19,15 +19,8 @@ public class Bookmark {
   public Object getObject() {
     return object;
   }
-  public Object getObject(Class<?> cls) {
-    Object obj = getObject();
-    if ( obj == null ) {
-      return null;
-    }
-    if ( cls.isAssignableFrom(obj.getClass())) {
-      return obj;
-    }
-    return null;
+  public <T> T getObject(Class<T> cls) {
+    return Serialization.cast(getObject(), cls);
   }
   @Override
   public String toString() {

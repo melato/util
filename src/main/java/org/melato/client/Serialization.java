@@ -80,5 +80,10 @@ public class Serialization {
     write(object, stream);
     return stream.toByteArray();
   }
-  
+  public static <T> T cast(Object obj, Class<T> clazz) {
+    if ( obj != null && clazz.isAssignableFrom(obj.getClass())) {
+      return (T) obj;
+    }
+    return null;
+  }
 }
