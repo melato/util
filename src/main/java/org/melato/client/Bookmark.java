@@ -10,6 +10,11 @@ public class Bookmark {
     this.name = name;
     this.object = object;
   }
+  public Bookmark(Bookmark bookmark, String name) {
+    this.type = bookmark.type;
+    this.name = name;
+    this.object = bookmark.object;
+  }
   public int getType() {
     return type;
   }
