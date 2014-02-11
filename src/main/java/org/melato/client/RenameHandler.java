@@ -1,5 +1,5 @@
 /*-------------------------------------------------------------------------
- * Copyright (c) 2012,2013, Alex Athanasopoulos.  All Rights Reserved.
+ * Copyright (c) 2012,2013,2014, Alex Athanasopoulos.  All Rights Reserved.
  * alex@melato.org
  *-------------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify
@@ -18,12 +18,7 @@
  */
 package org.melato.client;
 
-import java.util.Collection;
-
-
-public interface BookmarkStorage {
-  void loadBookmarks(Collection<Bookmark> bookmarks);
-  void renameBookmark(Bookmark bookmark, String name);
-  void deleteBookmark(Bookmark bookmark);
-  Bookmark addBookmark(Bookmark bookmark) throws NameAlreadyExistsException;
+public interface RenameHandler {
+  String getName();
+  void setName(String name) throws NameAlreadyExistsException;
 }
