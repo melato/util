@@ -18,7 +18,10 @@
  */
 package org.melato.util.test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.junit.Assert;
@@ -40,6 +43,14 @@ public class DateIdTest {
   }
   public @Test void string() {
     Assert.assertEquals("2012-12-17", DateId.toString(20121217));    
+  }
+  public @Test void toCalendar() {
+    Calendar cal = new GregorianCalendar();
+    DateId.setCalendar(20140309, cal);
+    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    Date date = cal.getTime();
+    System.out.println(date);
+    Assert.assertEquals("2014-03-09", format.format(date));    
   }
 
 }
