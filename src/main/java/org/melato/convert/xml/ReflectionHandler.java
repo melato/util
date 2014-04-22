@@ -83,6 +83,7 @@ public class ReflectionHandler<T> extends XMLMappingHandler {
             Object value = parsers[i].parse(text);
             reflector.setProperty(bean, i, value);
           }          
+          handlers[i].clear();
         }
       }
       collector.add(bean);
