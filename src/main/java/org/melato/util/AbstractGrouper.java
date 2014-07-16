@@ -18,13 +18,23 @@
  */
 package org.melato.util;
 
+import java.util.Arrays;
+import java.util.List;
+
 /** Abstract class that facilitates spliting an array of objects into groups of contiguous items.
  */
 public abstract class AbstractGrouper<T> {
   /** Determines whether two consecutive items are in the same group. */
   protected abstract boolean inSameGroup(T item, T nextItem);
-  protected abstract void addGroup(T[] array, int start, int end);
+ 
+  protected void addGroup(T[] array, int start, int end) {
+    addGroup(Arrays.asList(array).subList(start, end));
+  }
 
+  protected void addGroup(List<T> group) {
+    throw new UnsupportedOperationException("should have overriden addGroup()");
+  }
+  
   public void group(T[] array) {
     if ( array.length == 0 )
       return;

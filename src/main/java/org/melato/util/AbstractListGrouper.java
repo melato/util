@@ -21,7 +21,7 @@ package org.melato.util;
 import java.util.Arrays;
 import java.util.List;
 
-/** Abstract class that facilitates spliting an array of objects into groups of contiguous items.
+/** Abstract class that facilitates spliting a list of objects into groups of contiguous items.
  */
 public abstract class AbstractListGrouper<T> {
   /** Determines whether two consecutive items are in the same group. */
