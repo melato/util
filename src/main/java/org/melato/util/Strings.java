@@ -59,4 +59,17 @@ public class Strings {
     }
     return buf == null ? name : buf.toString();    
   }
+  public static boolean isEmpty(String s) {
+    return s == null || s.length() == 0;
+  }
+  public static boolean equal(String s1, String s2) {
+    if ( s1 == s2 ) {
+      return true;
+    }
+    if ( s1 == null ) {
+      return false;
+    }
+    return s1.equals(s2);
+  }
+  
 }
