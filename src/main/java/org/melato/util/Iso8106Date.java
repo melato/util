@@ -26,9 +26,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Iso8106Date {
-  static TimeZone utc = TimeZone.getTimeZone( "GMT" );
-  static Pattern datePattern = Pattern.compile( "([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})T([0-9]{1,2}):([0-9]{2}):([0-9\\.]*)([Z+-].*)");
-  static Pattern tzPattern = Pattern.compile( "([-+])([0-9]{2}):([0-9]{2})");
+  static final TimeZone UTC = TimeZone.getTimeZone( "GMT" );
+  static final Pattern datePattern = Pattern.compile( "([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})T([0-9]{1,2}):?([0-9]{2}):?([0-9\\.]*)([Z+-]?.*)");
+  static final Pattern tzPattern = Pattern.compile( "([-+])([0-9]{2}):([0-9]{2})");
 
   public static Date parseDate(String s) {
     long time = parseTime(s);
@@ -38,6 +38,9 @@ public class Iso8106Date {
   }
   public static int parseTimeZone(String tz) {
     if ( "Z".equals(tz)) {
+      return 0;
+    }
+    if ( tz.length() == 0 ) {
       return 0;
     }
     Matcher matcher = tzPattern.matcher(tz);
@@ -74,11 +77,13 @@ public class Iso8106Date {
       boolean isUtc = "Z".equals( matcher.group(7));
       GregorianCalendar calendar = new GregorianCalendar(year,  month - 1, day, hour, minute);      
       if ( isUtc ) {
-        calendar.setTimeZone(utc);
+        calendar.setTimeZone(UTC);
       } else {
-        calendar.setTimeZone(utc);
         int minutes = parseTimeZone(matcher.group(7));
-        calendar.add(Calendar.MINUTE, -minutes);
+        if ( minutes != 0 ) {
+          calendar.setTimeZone(UTC);
+          calendar.add(Calendar.MINUTE, -minutes);
+        }
       }
       long time = calendar.getTimeInMillis();
       time += millisecond;

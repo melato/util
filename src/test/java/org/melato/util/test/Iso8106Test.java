@@ -56,4 +56,11 @@ public class Iso8106Test {
     int minutes = Iso8106Date.parseTimeZone(tzstring);
     Assert.assertEquals(300, minutes);
   } 
+  public @Test void parseDateLocal() {
+    String datestring = "2014-08-10T04:31:58";
+    Date date = Iso8106Date.parseDate(datestring);
+    DateFormat format = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss");
+    //format.setTimeZone(TimeZone.getTimeZone("GMT"));
+    Assert.assertEquals( "2014-08-10T04:31:58", format.format(date));
+}
 }
