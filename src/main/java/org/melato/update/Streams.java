@@ -53,10 +53,9 @@ public class Streams {
     copy(in, out, true);
   }
 
-  public static void copy(URL url, File file) throws IOException {
+  public static void copy(InputStream in, File file) throws IOException {
     File dir = file.getParentFile();
     File tmpFile = new File(dir, file.getName() + ".tmp");
-    InputStream in = url.openStream();
     try {
       OutputStream out = new FileOutputStream(tmpFile);
       try {
@@ -69,6 +68,11 @@ public class Streams {
     }
     file.delete();
     tmpFile.renameTo(file);
+  }
+
+  public static void copy(URL url, File file) throws IOException {
+    InputStream in = url.openStream();
+    copy(in, file);
   }
 
   public static String copyToString(InputStream in)
